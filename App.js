@@ -13,8 +13,8 @@ export default class App extends Component {
       <SafeAreaView style={{flex: 1}}>
         {/* <Filter /> */}
         {/* <Main /> */}
-        <Word />
-        {/* <Form/> */}
+        {/* <Word /> */}
+        <Form />
       </SafeAreaView>
     );
   }

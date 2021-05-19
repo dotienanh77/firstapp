@@ -12,9 +12,12 @@ export default class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      shouldShowForm: false, // dieu kien dong/ mo form
+      shouldShowForm: true, // dieu kien dong/ mo form
     };
   }
+  toggleForm = () => {
+    this.setState({shouldShowForm: !this.state.shouldShowForm});
+  };
   renderForm = () => {
     if (this.state.shouldShowForm) {
       return (
@@ -32,9 +35,7 @@ export default class Form extends Component {
               <Text style={styles.textTouchable}>Add word</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {
-                this.setState({shouldShowForm: !this.state.shouldShowForm});
-              }}
+              onPress={this.toggleForm}
               style={styles.touchableCancel}>
               <Text style={styles.textTouchable}>Cancel</Text>
             </TouchableOpacity>
@@ -44,9 +45,7 @@ export default class Form extends Component {
     } else {
       return (
         <TouchableOpacity
-          onPress={() => {
-            this.setState({shouldShowForm: !this.state.shouldShowForm});
-          }}
+          onPress={this.toggleForm}
           style={styles.buttonOpenForm}>
           <Text style={styles.textOpenForm}> + </Text>
         </TouchableOpacity>

@@ -13,6 +13,8 @@ export default class Form extends Component {
     super(props);
     this.state = {
       shouldShowForm: true, // dieu kien dong/ mo form
+      txtEn: '',
+      txtVn: '',
     };
   }
   toggleForm = () => {
@@ -24,11 +26,20 @@ export default class Form extends Component {
         <View>
           <View style={styles.containerTextInput}>
             <TextInput
-              style={styles.textInput}
-              // secureTextEntry={true} - che noi dung
               placeholder="English"
+              style={styles.textInput}
+              onChangeText={(text) => {
+                // luu du lieu nhap vao
+                this.state.txtEn = text; // chi gan 1 lan
+              }}
             />
-            <TextInput placeholder="Vietnamese" style={styles.textInput} />
+            <TextInput
+              placeholder="Vietnamese"
+              style={styles.textInput}
+              onChangeText={(text) => {
+                this.state.txtVn = text;
+              }}
+            />
           </View>
           <View style={styles.containerTouchable}>
             <TouchableOpacity style={styles.touchableAddword}>

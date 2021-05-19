@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {
@@ -23,6 +25,7 @@ export default class Main extends Component {
       shouldShowForm: false,
       txtEn: '',
       txtVn: '',
+      // thuoc tinh lay tu form
     };
   }
   renderWord = (word) => {
@@ -73,28 +76,59 @@ export default class Main extends Component {
   toggleForm = () => {
     this.setState({shouldShowForm: !this.state.shouldShowForm});
   };
+  addWord = () => {
+    const {txtVn, txtEn} = this.state; // Destructuring - dung nhieu cho object de lay value trong object
+    if (txtEn.length <= 0 || txtVn.length <= 0) {
+      alert('Ban vui long nhap du thong tin');
+      // this.txtRef.focus(); // focus vao noi dung chua nhap
+      return;
+    }
+    // xu ly nut addword de them noi dung moi vao
+    // tao mot tu moi trong mang co san
+    const newWord = {
+      id: Math.random(), // tra ve 1 so ngau nhien tu 0 den 1 (co the la so thap phan)
+      en: txtEn,
+      vn: txtVn,
+      isMemorized: false,
+    };
+    // push du lieu vao trong phan tu cuoi cua mang
+    const newWords = this.state.words.map((word) => {
+      return {...word};
+    });
+    newWords.push(newWord);
+    this.txtEnRef.clear();
+    this.txtVnRef.clear();
+    this.setState({words: newWords, txtEn: '', txtVn: ''});
+  };
   renderForm = () => {
     if (this.state.shouldShowForm) {
       return (
         <View>
           <View style={styles.containerTextInput}>
             <TextInput
+              // ref={(refs) => (this.txtRef = refs)} focus vao noi dung chua nhap
+              ref={(refs) => (this.txtEnRef = refs)}
               placeholder="English"
               style={styles.textInput}
               onChangeText={(text) => {
-                this.state.txtEn = text;
+                // luu du lieu nhap vao
+                this.state.txtEn = text; // chi gan 1 lan
               }}
             />
             <TextInput
+              ref={(refs) => (this.txtVnRef = refs)}
+              placeholder="Vietnamese"
+              style={styles.textInput}
               onChangeText={(text) => {
                 this.state.txtVn = text;
               }}
-              placeholder="Vietnamese"
-              style={styles.textInput}
             />
           </View>
-          <View style={styles.containerTouchableForm}>
-            <TouchableOpacity style={styles.touchableAddword}>
+          <View style={styles.containerTouchable}>
+            <TouchableOpacity
+              // xu li nut add word
+              onPress={this.addWord}
+              style={styles.touchableAddword}>
               <Text style={styles.textTouchable}>Add word</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -110,7 +144,7 @@ export default class Main extends Component {
         <TouchableOpacity
           onPress={this.toggleForm}
           style={styles.buttonOpenForm}>
-          <Text style={styles.textOpenForm}>+</Text>
+          <Text style={styles.textOpenForm}> + </Text>
         </TouchableOpacity>
       );
     }
@@ -118,6 +152,7 @@ export default class Main extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        {/* chen giao dien them tu moi vao phia tren */}
         {this.renderForm()}
         {this.state.words.map((word) => {
           return this.renderWord(word);
@@ -186,6 +221,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderWidth: 1,
+    borderRadius: 10,
     height: 60,
     fontSize: 20,
     paddingHorizontal: 10,

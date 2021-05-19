@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {
@@ -42,7 +44,16 @@ export default class Form extends Component {
             />
           </View>
           <View style={styles.containerTouchable}>
-            <TouchableOpacity style={styles.touchableAddword}>
+            <TouchableOpacity
+              // xu li nut add word
+              onPress={() => {
+                const {txtVn, txtEn} = this.state; // Destructuring - dung nhieu cho object de lay value trong object
+                if (txtEn.length <= 0 || txtVn.length <= 0) {
+                  alert('Ban vui long nhap du thong tin');
+                  return;
+                }
+              }}
+              style={styles.touchableAddword}>
               <Text style={styles.textTouchable}>Add word</Text>
             </TouchableOpacity>
             <TouchableOpacity

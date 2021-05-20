@@ -12,8 +12,8 @@ export default class App extends Component {
   render() {
     return (
       <SafeAreaView style={{flex: 1}}>
-        <Filter />
-        {/* <Main /> */}
+        {/* <Filter /> */}
+        <Main />
         {/* <Word /> */}
         {/* <Form /> */}
         {/* <Box /> */}

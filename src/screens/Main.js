@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
@@ -10,7 +11,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-
+import RNPickerSelect from 'react-native-picker-select';
 export default class Main extends Component {
   constructor(props) {
     super(props);
@@ -149,11 +150,33 @@ export default class Main extends Component {
       );
     }
   };
+  renderFilter = () => {
+    return (
+      <View style={styles.containerPickerStyle}>
+        <RNPickerSelect
+          onValueChange={(value) => {
+            this.value = value;
+          }}
+          onDonePress={() => {
+            // khi nao xong moi tra ket qua ve
+            alert(this.value);
+          }}
+          items={[
+            {label: 'Show All', value: 'Show_All'},
+            {label: 'Show Forgot', value: 'Show_Forgot'},
+            {label: 'Show Memorized', value: 'Show_Memorized'},
+          ]}
+        />
+      </View>
+    );
+  };
   render() {
     return (
       <SafeAreaView style={styles.container}>
         {/* chen giao dien them tu moi vao phia tren */}
         {this.renderForm()}
+        {/* chen filter */}
+        {this.renderFilter()}
         {this.state.words.map((word) => {
           return this.renderWord(word);
         })}
@@ -258,5 +281,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     marginBottom: 10,
+  },
+  containerPickerStyle: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: 'black',
+    padding: 20,
+    marginBottom: 5,
+    paddingHorizontal: 10,
+  },
+  pickerStyle: {
+    padding: 50,
   },
 });

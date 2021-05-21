@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 
 export default class Word extends Component {
   constructor(props) {
@@ -43,8 +43,14 @@ export default class Word extends Component {
   };
   render() {
     return (
-      <View>
-        <Text> textInComponent </Text>
+      <View style={styles.container}>
+        <FlatList
+          data={this.state.words}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => {
+            return this.renderWord(item);
+          }}
+        />
       </View>
     );
   }
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
   containerWord: {
     marginTop: '2%',
     justifyContent: 'center',
-    height: '13%',
+    height: 100,
     flexDirection: 'column',
     backgroundColor: 'gainsboro',
     elevation: 5,

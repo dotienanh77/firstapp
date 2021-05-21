@@ -13,8 +13,8 @@ export default class App extends Component {
     return (
       <SafeAreaView style={{flex: 1}}>
         {/* <Filter /> */}
-        <Main />
-        {/* <Word /> */}
+        {/* <Main /> */}
+        <Word />
         {/* <Form /> */}
         {/* <Box /> */}
         {/* <HiddenContent /> */}

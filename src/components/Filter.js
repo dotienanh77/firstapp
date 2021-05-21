@@ -15,6 +15,7 @@ export default class Filter extends Component {
             this.value = value;
           }}
           onDonePress={() => {
+            // khi nao xong moi tra ket qua ve
             alert(this.value);
           }}
           items={[

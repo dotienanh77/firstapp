@@ -1,8 +1,3 @@
-/* eslint-disable eslint-comments/no-unused-disable */
-/* eslint-disable no-undef */
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {
@@ -12,9 +7,11 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Flatform,
+  Platform,
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import Form from '../components/Form';
+
 export default class Main extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +26,6 @@ export default class Main extends Component {
       shouldShowForm: false,
       txtEn: '',
       txtVn: '',
-      // thuoc tinh lay tu form
       filterMode: null,
     };
   }
@@ -89,21 +85,17 @@ export default class Main extends Component {
     this.setState({shouldShowForm: !this.state.shouldShowForm});
   };
   addWord = () => {
-    const {txtVn, txtEn} = this.state; // Destructuring - dung nhieu cho object de lay value trong object
+    const {txtEn, txtVn} = this.state;
     if (txtEn.length <= 0 || txtVn.length <= 0) {
-      alert('Ban vui long nhap du thong tin');
-      // this.txtRef.focus(); // focus vao noi dung chua nhap
+      alert('Bạn chưa nhập đủ thông tin');
       return;
     }
-    // xu ly nut addword de them noi dung moi vao
-    // tao mot tu moi trong mang co san
     const newWord = {
-      id: Math.random(), // tra ve 1 so ngau nhien tu 0 den 1 (co the la so thap phan)
+      id: Math.random(),
       en: txtEn,
       vn: txtVn,
       isMemorized: false,
     };
-    // push du lieu vao trong phan tu cuoi cua mang
     const newWords = this.state.words.map((word) => {
       return {...word};
     });
@@ -111,55 +103,6 @@ export default class Main extends Component {
     this.txtEnRef.clear();
     this.txtVnRef.clear();
     this.setState({words: newWords, txtEn: '', txtVn: ''});
-  };
-  renderForm = () => {
-    if (this.state.shouldShowForm) {
-      return (
-        <View>
-          <View style={styles.containerTextInput}>
-            <TextInput
-              // ref={(refs) => (this.txtRef = refs)} focus vao noi dung chua nhap
-              ref={(refs) => (this.txtEnRef = refs)}
-              placeholder="English"
-              style={styles.textInput}
-              onChangeText={(text) => {
-                // luu du lieu nhap vao
-                this.state.txtEn = text; // chi gan 1 lan
-              }}
-            />
-            <TextInput
-              ref={(refs) => (this.txtVnRef = refs)}
-              placeholder="Vietnamese"
-              style={styles.textInput}
-              onChangeText={(text) => {
-                this.state.txtVn = text;
-              }}
-            />
-          </View>
-          <View style={styles.containerTouchable}>
-            <TouchableOpacity
-              // xu li nut add word
-              onPress={this.addWord}
-              style={styles.touchableAddword}>
-              <Text style={styles.textTouchable}>Add word</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={this.toggleForm}
-              style={styles.touchableCancel}>
-              <Text style={styles.textTouchable}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <TouchableOpacity
-          onPress={this.toggleForm}
-          style={styles.buttonOpenForm}>
-          <Text style={styles.textOpenForm}> + </Text>
-        </TouchableOpacity>
-      );
-    }
   };
   renderFilter = () => {
     let selectValue = null;
@@ -174,7 +117,6 @@ export default class Main extends Component {
             selectValue = value;
           }}
           onDonePress={() => {
-            // khi nao xong moi tra ket qua ve
             this.setState({filterMode: selectValue});
           }}
           items={[
@@ -189,9 +131,7 @@ export default class Main extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        {/* chen giao dien them tu moi vao phia tren */}
-        {this.renderForm()}
-        {/* chen filter */}
+        <Form />
         {this.renderFilter()}
         {this.state.words.map((word) => {
           return this.renderWord(word);
@@ -202,6 +142,7 @@ export default class Main extends Component {
 }
 // ismemorized : Forgot - màu xanh
 // isMemorized == false : Memorized - màu đỏ
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -253,58 +194,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
   },
-  containerTextInput: {
-    width: '100%',
-    height: 150,
-    justifyContent: 'space-evenly',
-  },
-  textInput: {
-    borderWidth: 1,
-    borderRadius: 10,
-    height: 60,
-    fontSize: 20,
-    paddingHorizontal: 10,
-  },
-  touchableAddword: {
-    backgroundColor: '#218838',
-    padding: 15,
-    borderRadius: 10,
-  },
-  textTouchable: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: '500',
-  },
-  touchableCancel: {
-    backgroundColor: 'red',
-    padding: 15,
-    borderRadius: 10,
-  },
-  buttonOpenForm: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#45B157',
-    borderRadius: 5,
-    marginBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textOpenForm: {
-    color: 'white',
-    fontSize: 30,
-  },
-  containerTouchableForm: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    marginBottom: 10,
-  },
   containerPickerStyle: {
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 15,
     borderColor: 'black',
     padding: 20,
     marginBottom: 5,
-    paddingHorizontal: 10,
   },
   pickerStyle: {
     padding: 50,

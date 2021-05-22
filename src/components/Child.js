@@ -11,7 +11,7 @@ export default class Child extends Component {
           marginTop: 20,
         }}>
         <TouchableOpacity
-          onPress={() => this.props.onIncrement()}
+          onPress={() => this.props.onIncrement()} // child lay tham so de xu li
           style={{padding: 10, backgroundColor: 'green', borderRadius: 5}}>
           <Text style={{fontSize: 20, color: 'white'}}>Increment</Text>
         </TouchableOpacity>
@@ -22,8 +22,8 @@ export default class Child extends Component {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.onReset()}
-          style={{padding: 10, backgroundColor: 'yellow', borderRadius: 5}}>
-          <Text style={{fontSize: 20, color: 'gray'}}>Reset</Text>
+          style={{padding: 10, backgroundColor: 'black', borderRadius: 5}}>
+          <Text style={{fontSize: 20, color: 'white'}}>Reset</Text>
         </TouchableOpacity>
       </View>
     );

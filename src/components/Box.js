@@ -9,6 +9,7 @@ export default class Box extends Component {
       count: 0,
     };
   }
+  // dinh nghia thuoc tinh thay doi
   onIncrement = () => {
     this.setState({count: this.state.count + 1});
   };
@@ -26,9 +27,10 @@ export default class Box extends Component {
           Count : {this.state.count}
         </Text>
         <Child
+          // truyen tham so vao child de xu li (truyen vao props)
           onIncrement={this.onIncrement}
-          onReset={this.onReset}
           onDecrement={this.onDecrement}
+          onReset={this.onReset}
         />
       </View>
     );

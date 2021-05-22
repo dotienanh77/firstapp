@@ -2,6 +2,9 @@
 import React, {Component} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 export default class Child extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
+  }
   render() {
     return (
       <View

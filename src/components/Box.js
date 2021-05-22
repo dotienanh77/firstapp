@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import Child from './Child';
+
 export default class Box extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +10,6 @@ export default class Box extends Component {
       count: 0,
     };
   }
-  // dinh nghia thuoc tinh thay doi
   onIncrement = () => {
     this.setState({count: this.state.count + 1});
   };
@@ -27,10 +27,9 @@ export default class Box extends Component {
           Count : {this.state.count}
         </Text>
         <Child
-          // truyen tham so vao child de xu li (truyen vao props)
           onIncrement={this.onIncrement}
-          onDecrement={this.onDecrement}
           onReset={this.onReset}
+          onDecrement={this.onDecrement}
         />
       </View>
     );

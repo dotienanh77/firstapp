@@ -1,22 +1,22 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
-/* eslint-disable no-alert */
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Platform} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 export default class Filter extends Component {
-  render() {
-    let value = null;
+  renderFilter = () => {
+    let selectValue = null;
     return (
       <View style={styles.containerPickerStyle}>
         <RNPickerSelect
+          style={{inputAndroid: {color: 'black'}}}
           onValueChange={(value) => {
-            this.value = value;
+            if (Platform.OS === 'android') {
+              this.props.onSetFilterMode(value);
+            }
+            selectValue = value;
           }}
           onDonePress={() => {
-            // khi nao xong moi tra ket qua ve
-            alert(this.value);
+            this.props.onSetFilterMode(selectValue);
           }}
           items={[
             {label: 'Show All', value: 'Show_All'},
@@ -26,17 +26,19 @@ export default class Filter extends Component {
         />
       </View>
     );
+  };
+  render() {
+    return this.renderFilter();
   }
 }
 
 const styles = StyleSheet.create({
   containerPickerStyle: {
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 1,
     borderColor: 'black',
     padding: 20,
     marginBottom: 5,
-    paddingHorizontal: 10,
   },
   pickerStyle: {
     padding: 50,

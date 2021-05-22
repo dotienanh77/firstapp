@@ -20,6 +20,23 @@ export default class Form extends Component {
   toggleForm = () => {
     this.setState({shouldShowForm: !this.state.shouldShowForm});
   };
+  addWord = () => {
+    const {txtEn, txtVn} = this.state;
+    if (txtEn.length <= 0 || txtVn.length <= 0) {
+      alert('Bạn chưa nhập đủ thông tin');
+      return;
+    }
+    const newWord = {
+      id: Math.random(),
+      en: txtEn,
+      vn: txtVn,
+      isMemorized: false,
+    };
+    this.props.onAddWord(newWord);
+    this.setState({txtEn: '', txtVn: ''});
+    this.txtEnRef.clear();
+    this.txtVnRef.clear();
+  };
   renderForm = () => {
     if (this.state.shouldShowForm) {
       return (

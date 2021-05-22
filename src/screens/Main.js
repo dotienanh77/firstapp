@@ -27,6 +27,7 @@ export default class Main extends Component {
   toggleForm = () => {
     this.setState({shouldShowForm: !this.state.shouldShowForm});
   };
+
   addWord = () => {
     const {txtEn, txtVn} = this.state;
     if (txtEn.length <= 0 || txtVn.length <= 0) {

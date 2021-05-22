@@ -24,35 +24,21 @@ export default class Main extends Component {
       filterMode: null,
     };
   }
-  toggleForm = () => {
-    this.setState({shouldShowForm: !this.state.shouldShowForm});
-  };
-
-  addWord = () => {
-    const {txtEn, txtVn} = this.state;
-    if (txtEn.length <= 0 || txtVn.length <= 0) {
-      alert('Bạn chưa nhập đủ thông tin');
-      return;
-    }
-    const newWord = {
-      id: Math.random(),
-      en: txtEn,
-      vn: txtVn,
-      isMemorized: false,
-    };
+  onAddWord = (newWord) => {
     const newWords = this.state.words.map((word) => {
       return {...word};
     });
     newWords.push(newWord);
-    this.txtEnRef.clear();
-    this.txtVnRef.clear();
-    this.setState({words: newWords, txtEn: '', txtVn: ''});
+    this.setState({words: newWords});
+  };
+  onSetFilterMode = (filterMode) => {
+    this.setState({filterMode: filterMode});
   };
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <Form />
-        <Filter filterMode={this.state.filterMode} />
+        <Form onAddWord={this.onAddWord} />
+        <Filter onSetFilterMode={this.onSetFilterMode} />
         <Word words={this.state.words} filterMode={this.state.filterMode} />
       </SafeAreaView>
     );

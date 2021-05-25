@@ -30,86 +30,20 @@ export default class Main extends Component {
       filterMode: null,
     };
   }
-
-  renderWord = (word) => {
-    const {filterMode} = this.state;
-    if (filterMode === 'Show_Forgot' && !word.isMemorized) {
-      return null;
-    } else if (filterMode === 'Show_Memorized' && word.isMemorized) {
-      return null;
-    } else {
-      return (
-        <View style={styles.containerWord} key={word.id}>
-          <View style={styles.containerText}>
-            <Text style={styles.textStyleEn}>{word.en}</Text>
-            <Text style={styles.textStyleVn}>
-              {word.isMemorized ? '----' : word.vn}
-            </Text>
-          </View>
-          <View style={styles.containerTouchable}>
-            <TouchableOpacity
-              onPress={() => {
-                const newWords = this.state.words.map((item) => {
-                  if (item.id === word.id) {
-                    return {...item, isMemorized: !item.isMemorized};
-                  }
-                  return item;
-                });
-                this.setState({words: newWords});
-              }}
-              style={{
-                ...styles.touchForgot,
-                backgroundColor: word.isMemorized ? 'green' : 'red',
-              }}>
-              <Text style={styles.textTouchForgot}>
-                {word.isMemorized ? 'Forgot' : 'Memorized'}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                const newWords = this.state.words.filter((item) => {
-                  if (item.id === word.id) {
-                    return false;
-                  }
-                  return true;
-                });
-                this.setState({words: newWords});
-              }}
-              style={styles.touchRemove}>
-              <Text style={styles.textTouchRemove}>Remove</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    }
-  };
   toggleForm = () => {
     this.setState({shouldShowForm: !this.state.shouldShowForm});
   };
-  addWord = () => {
-    const {txtEn, txtVn} = this.state;
-    if (txtEn.length <= 0 || txtVn.length <= 0) {
-      alert('Bạn chưa nhập đủ thông tin');
-      return;
-    }
-    const newWord = {
-      id: Math.random(),
-      en: txtEn,
-      vn: txtVn,
-      isMemorized: false,
-    };
+  onaddWord = (newWord) => {
     const newWords = this.state.words.map((word) => {
       return {...word};
     });
     newWords.push(newWord);
-    this.txtEnRef.clear();
-    this.txtVnRef.clear();
-    this.setState({words: newWords, txtEn: '', txtVn: ''});
+    this.setState({words: newWords});
   };
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <Form />
+        <Form onAddWord={this.onaddWord} />
         <Filter filterMode={this.state.filterMode} />
         {/* <Word words={this.state.words} /> */}
         <Word words={this.state.words} filterMode={this.state.filterMode} />

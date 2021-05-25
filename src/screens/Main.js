@@ -30,9 +30,6 @@ export default class Main extends Component {
       filterMode: null,
     };
   }
-  toggleForm = () => {
-    this.setState({shouldShowForm: !this.state.shouldShowForm});
-  };
   onaddWord = (newWord) => {
     const newWords = this.state.words.map((word) => {
       return {...word};
@@ -40,11 +37,17 @@ export default class Main extends Component {
     newWords.push(newWord);
     this.setState({words: newWords});
   };
+  onSetFilterMode = (filterMode) => {
+    this.setState({filterMode: filterMode});
+  };
   render() {
     return (
       <SafeAreaView style={styles.container}>
         <Form onAddWord={this.onaddWord} />
-        <Filter filterMode={this.state.filterMode} />
+        <Filter
+          filterMode={this.state.filterMode}
+          onSetFilterMode={this.onSetFilterMode}
+        />
         {/* <Word words={this.state.words} /> */}
         <Word words={this.state.words} filterMode={this.state.filterMode} />
       </SafeAreaView>

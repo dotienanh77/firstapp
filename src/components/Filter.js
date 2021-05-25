@@ -8,16 +8,15 @@ export default class Filter extends Component {
     return (
       <View style={styles.containerPickerStyle}>
         <RNPickerSelect
-          value={this.props.filterMode}
           style={{inputAndroid: {color: 'black'}}}
           onValueChange={(value) => {
             if (Platform.OS === 'android') {
-              this.setState({filterMode: value});
+              this.props.onSetFilterMode(value);
             }
             selectValue = value;
           }}
           onDonePress={() => {
-            this.setState({filterMode: selectValue});
+            this.props.onSetFilterMode(selectValue);
           }}
           items={[
             {label: 'Show All', value: 'Show_All'},
@@ -29,7 +28,7 @@ export default class Filter extends Component {
     );
   };
   render() {
-    return this.renderFilter(this.props.filterMode);
+    return this.renderFilter();
   }
 }
 

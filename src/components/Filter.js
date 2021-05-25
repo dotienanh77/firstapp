@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-alert */
+/* eslint-disable no-unused-vars */
 import React, {Component} from 'react';
 import {StyleSheet, View, Platform} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
@@ -11,12 +14,12 @@ export default class Filter extends Component {
           style={{inputAndroid: {color: 'black'}}}
           onValueChange={(value) => {
             if (Platform.OS === 'android') {
-              this.props.onSetFilterMode(value);
+              this.setState({filterMode: value});
             }
             selectValue = value;
           }}
           onDonePress={() => {
-            this.props.onSetFilterMode(selectValue);
+            this.setState({filterMode: selectValue});
           }}
           items={[
             {label: 'Show All', value: 'Show_All'},
@@ -28,7 +31,7 @@ export default class Filter extends Component {
     );
   };
   render() {
-    return this.renderFilter();
+    return this.renderFilter(this.props.filterMode);
   }
 }
 

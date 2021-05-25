@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
 import {
@@ -6,10 +8,11 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
+  TextInput,
+  Platform,
 } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import Form from '../components/Form';
-import Filter from '../components/Filter';
-import Word from '../components/Word';
 
 export default class Main extends Component {
   constructor(props) {
@@ -22,56 +25,126 @@ export default class Main extends Component {
         {id: 4, en: 'Four', vn: 'Bốn', isMemorized: true},
         {id: 5, en: 'Five', vn: 'Năm', isMemorized: false},
       ],
+      shouldShowForm: false,
+      txtEn: '',
+      txtVn: '',
       filterMode: null,
     };
   }
-  onAddWord = (newWord) => {
+
+  renderWord = (word) => {
+    const {filterMode} = this.state;
+    if (filterMode === 'Show_Forgot' && !word.isMemorized) {
+      return null;
+    } else if (filterMode === 'Show_Memorized' && word.isMemorized) {
+      return null;
+    } else {
+      return (
+        <View style={styles.containerWord} key={word.id}>
+          <View style={styles.containerText}>
+            <Text style={styles.textStyleEn}>{word.en}</Text>
+            <Text style={styles.textStyleVn}>
+              {word.isMemorized ? '----' : word.vn}
+            </Text>
+          </View>
+          <View style={styles.containerTouchable}>
+            <TouchableOpacity
+              onPress={() => {
+                const newWords = this.state.words.map((item) => {
+                  if (item.id === word.id) {
+                    return {...item, isMemorized: !item.isMemorized};
+                  }
+                  return item;
+                });
+                this.setState({words: newWords});
+              }}
+              style={{
+                ...styles.touchForgot,
+                backgroundColor: word.isMemorized ? 'green' : 'red',
+              }}>
+              <Text style={styles.textTouchForgot}>
+                {word.isMemorized ? 'Forgot' : 'Memorized'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                const newWords = this.state.words.filter((item) => {
+                  if (item.id === word.id) {
+                    return false;
+                  }
+                  return true;
+                });
+                this.setState({words: newWords});
+              }}
+              style={styles.touchRemove}>
+              <Text style={styles.textTouchRemove}>Remove</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
+  };
+  toggleForm = () => {
+    this.setState({shouldShowForm: !this.state.shouldShowForm});
+  };
+  addWord = () => {
+    const {txtEn, txtVn} = this.state;
+    if (txtEn.length <= 0 || txtVn.length <= 0) {
+      alert('Bạn chưa nhập đủ thông tin');
+      return;
+    }
+    const newWord = {
+      id: Math.random(),
+      en: txtEn,
+      vn: txtVn,
+      isMemorized: false,
+    };
     const newWords = this.state.words.map((word) => {
       return {...word};
     });
     newWords.push(newWord);
-    this.setState({words: newWords});
+    this.txtEnRef.clear();
+    this.txtVnRef.clear();
+    this.setState({words: newWords, txtEn: '', txtVn: ''});
   };
-  onSetFilterMode = (filterMode) => {
-    this.setState({filterMode: filterMode});
-  };
-  onToggleWord = (word) => {
-    const newWords = this.state.words.map((item) => {
-      if (item.id === word.id) {
-        return {...item, isMemorized: !item.isMemorized};
-      }
-      return item;
-    });
-    this.setState({words: newWords});
-  };
-  onRemoveWord = (word) => {
-    const newWords = this.state.words.filter((item) => {
-      console.log(word.id, item.id);
-      if (item.id === word.id) {
-        return false;
-      }
-      return true;
-    });
-    this.setState({words: newWords});
+  renderFilter = () => {
+    let selectValue = null;
+    return (
+      <View style={styles.containerPickerStyle}>
+        <RNPickerSelect
+          style={{inputAndroid: {color: 'black'}}}
+          onValueChange={(value) => {
+            if (Platform.OS === 'android') {
+              this.setState({filterMode: value});
+            }
+            selectValue = value;
+          }}
+          onDonePress={() => {
+            this.setState({filterMode: selectValue});
+          }}
+          items={[
+            {label: 'Show All', value: 'Show_All'},
+            {label: 'Show Forgot', value: 'Show_Forgot'},
+            {label: 'Show Memorized', value: 'Show_Memorized'},
+          ]}
+        />
+      </View>
+    );
   };
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <Form onAddWord={this.onAddWord} />
-        <Filter onSetFilterMode={this.onSetFilterMode} />
-        <Word
-          onToggleWord={this.onToggleWord}
-          onRemoveWord={this.onRemoveWord}
-          words={this.state.words}
-          filterMode={this.state.filterMode}
-        />
+        <Form />
+        {this.renderFilter()}
+        {this.state.words.map((word) => {
+          return this.renderWord(word);
+        })}
       </SafeAreaView>
     );
   }
 }
 // ismemorized : Forgot - màu xanh
 // isMemorized == false : Memorized - màu đỏ
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
